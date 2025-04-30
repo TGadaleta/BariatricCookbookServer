@@ -20,7 +20,19 @@ class RegisterView(APIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            user = serializer.save()
+
+            profile = user.profile
+            profile.allergies = request.data.get('allergies', [])
+            profile.diet = request.data.get('diet', '')
+            profile.max_calories = request.data.get('max_calories', 0)
+            profile.max_carbs = request.data.get('max_carbs', 0)
+            profile.max_protein = request.data.get('max_protein', 0)
+            profile.max_fat = request.data.get('max_fat', 0)
+            profile.save()
+            # Automatically log in the user after registration
+            login(request, user)
+            
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
