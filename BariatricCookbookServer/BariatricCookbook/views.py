@@ -20,6 +20,7 @@ class RegisterView(APIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
+            print('data is valid')
             user = serializer.save()
 
             profile = user.profile
@@ -32,7 +33,7 @@ class RegisterView(APIView):
             profile.save()
             # Automatically log in the user after registration
             login(request, user)
-            
+
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
