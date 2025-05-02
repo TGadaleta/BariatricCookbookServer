@@ -3,9 +3,12 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 
 class ProfileSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username', read_only=True)
+    email = serializers.EmailField(source='user.email', read_only=True)
+
     class Meta:
         model = Profile
-        fields = '__all__'
+        fields = ['id', 'username', 'email', 'diet', 'allergies', 'max_calories', 'max_carbs', 'max_protein', 'max_fat']
 
 class UserSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(required=True)
