@@ -15,9 +15,9 @@ class GenerateMealPlanView(APIView):
         validated_data = serializer.validated_data
         user_preferences = validated_data.get("preferences", {})
         days = validated_data["days"]
-        meals_per_day = validated_data["meals_per_day"]
+        mealsPerDay = validated_data["mealsPerDay"]
 
-        prompt = f"Generate a {days}-day meal plan with {meals_per_day} meals per day based on the following preferences: {user_preferences}."
+        prompt = f"Generate a {days}-day meal plan with {mealsPerDay} meals per day based on the following preferences: {user_preferences}."
 
         client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
         
